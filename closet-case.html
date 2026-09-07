@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电子衣柜｜郑迦文产品实践</title>
+<meta name="description" content="电子衣柜移动端 H5 产品实践：从问题定义、MVP 分层到六轮迭代与上线。">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--ink:#2b2b2b;--dim:#6b6862;--faint:#9d9a93;--line:#e9e5df;--bg:#faf8f5;--card:#fff;--brand:#c88f6a;--brand-d:#a9714f;--soft:#f5e9e0;--teal:#0f6e56;--tealbg:#e1f5ee;--blue:#185fa5;--bluebg:#e6f1fb;--amber:#854f0b;--amberbg:#faeeda;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.78;font-size:16px;}
+  .page{max-width:860px;margin:0 auto;padding:56px 28px 80px;}
+  .kicker{font-size:13px;letter-spacing:2px;color:var(--brand-d);font-weight:600;margin-bottom:10px;}
+  h1{font-size:34px;font-weight:700;letter-spacing:1px;margin-bottom:14px;line-height:1.3;}
+  .lede{font-size:17px;color:var(--dim);margin-bottom:28px;max-width:640px;}
+  .meta-bar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
+  .tag{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:6px 15px;font-size:13px;color:var(--dim);}
+  .tag b{color:var(--ink);font-weight:600;}
+  .cta{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:#fff;padding:12px 24px;border-radius:26px;text-decoration:none;font-weight:600;font-size:15px;margin-bottom:44px;}
+  .cta:hover{background:var(--brand-d);}
+  .back{display:inline-block;margin-bottom:24px;color:var(--brand-d);font-size:14px;text-decoration:none;}
+  h2{font-size:22px;font-weight:700;margin:44px 0 6px;padding-top:20px;border-top:1px solid var(--line);}
+  h2 .n{color:var(--brand);font-weight:700;margin-right:8px;}
+  .sub{color:var(--faint);font-size:14px;margin-bottom:18px;}
+  h3{font-size:16px;font-weight:600;margin:22px 0 8px;}
+  p{margin-bottom:14px;}
+  p.small{font-size:14px;color:var(--dim);}
+  ul{margin:0 0 16px 4px;list-style:none;}
+  li{position:relative;padding-left:20px;margin-bottom:9px;font-size:14.5px;}
+  li::before{content:"";position:absolute;left:2px;top:9px;width:6px;height:6px;border-radius:50%;background:var(--brand);}
+  strong{font-weight:600;}
+  em{font-style:normal;background:var(--soft);padding:1px 6px;border-radius:5px;color:var(--brand-d);font-weight:500;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:16px 0 8px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .card .lbl{font-size:13px;color:var(--faint);}
+  .card .num{font-size:26px;font-weight:700;color:var(--brand-d);margin-top:4px;}
+  .card .d{font-size:13px;color:var(--dim);margin-top:6px;}
+  .iter{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;}
+  .iter .h{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;}
+  .iter .rd{font-size:12px;font-weight:600;color:#fff;background:var(--brand);border-radius:6px;padding:2px 9px;flex:0 0 auto;}
+  .iter .ti{font-size:16px;font-weight:600;}
+  .iter .think{font-size:14px;color:var(--dim);}
+  .iter .think b{color:var(--teal);}
+  .decision{background:var(--tealbg);border:1px solid #9fe1cb;border-radius:12px;padding:14px 16px;margin:14px 0;}
+  .decision .dt{font-size:13px;font-weight:600;color:var(--teal);margin-bottom:4px;}
+  .decision p{margin:0;font-size:14px;color:#0b4d3d;}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .box .bt{font-size:14px;font-weight:600;margin-bottom:8px;}
+  .box.p .bt{color:var(--teal);}
+  .box.g .bt{color:var(--amber);}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--faint);text-align:center;line-height:1.9;}
+  @media(max-width:640px){.split{grid-template-columns:1fr;}h1{font-size:27px;}}
+  @media print{body{background:#fff;}.cta{display:none;}.page{padding:20px;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <a class="back" href="index.html">← 返回作品集</a>
+  <div class="kicker">产品案例 · PRODUCT CASE STUDY</div>
+  <h1>电子衣柜</h1>
+  <p class="lede">一个用于管理衣物和在线搭配的移动端 H5 应用，经过 6 轮迭代后完成部署上线。</p>
+
+  <div class="meta-bar">
+    <span class="tag"><b>角色</b> 产品设计 + 需求迭代</span>
+    <span class="tag"><b>类型</b> 移动端 H5 · 纯前端</span>
+    <span class="tag"><b>周期</b> 快速原型（数日）</span>
+    <span class="tag"><b>状态</b> 已上线可访问</span>
+  </div>
+
+  <a class="cta" href="https://chestnutabby111011-debug.github.io/dianzi-yigui/" target="_blank">▸ 打开在线 Demo 体验</a>
+
+  <h2><span class="n">01</span>项目背景</h2>
+  <div class="sub">从一个真实生活痛点出发</div>
+  <p>很多人衣服不少，却常陷入两个困境：<strong>「买了忘了穿」</strong>和<strong>「不知道怎么搭」</strong>。衣柜是物理的、静态的，无法帮人回顾和规划穿搭。</p>
+  <p>本项目尝试将衣柜数字化，让用户通过拍照记录衣物，并在试衣间中拖拽搭配。项目工作包括问题定义、功能拆分、交互迭代与部署上线。</p>
+
+  <h2><span class="n">02</span>技术方案选择</h2>
+  <div class="sub">根据验证目标和开发成本选择产品形态</div>
+  <p>初始方案为微信小程序。评估服务器、存储和维护成本后，第一版调整为纯前端 H5。</p>
+  <div class="decision">
+    <div class="dt">决策</div>
+    <p>采用纯前端 H5，将数据保存在用户本地，第一版无需服务器和云存储；后续根据用户测试结果再决定是否开发小程序及云端同步。</p>
+  </div>
+  <p class="small">本地存储可以降低初版开发与维护成本，但无法支持跨设备同步。因此，第一阶段优先验证上传、管理与搭配流程。</p>
+
+  <h2><span class="n">03</span>功能分层</h2>
+  <div class="sub">按优先级拆分 MVP 与后续功能</div>
+  <p>我把功能拆成三层，先做 MVP 闭环，其余按价值排队：</p>
+  <div class="split">
+    <div class="box p">
+      <div class="bt">先做 · MVP 核心闭环</div>
+      <ul style="margin-bottom:0;">
+        <li>平铺拍照上传</li>
+        <li>自动抠图去背景</li>
+        <li>分类 + 属性打标</li>
+        <li>衣柜网格浏览</li>
+        <li>试衣间拖拽搭配</li>
+      </ul>
+    </div>
+    <div class="box g">
+      <div class="bt">后续 · 体验与运营</div>
+      <ul style="margin-bottom:0;">
+        <li>保存 / 命名穿搭组合</li>
+        <li>搭配放大看单品信息</li>
+        <li>收纳位置记录</li>
+        <li>衣柜数据统计</li>
+        <li>分享 / 云端同步（远期）</li>
+      </ul>
+    </div>
+  </div>
+  <div class="decision">
+    <div class="dt">决策 · 降低使用门槛</div>
+    <p>上传时<strong>只有「分类」一个必选项</strong>，其余（价格/品牌/颜色/尺码/季节/收纳位置）全部选填。因为门槛越低，用户越愿意上传，衣柜才填得起来——这是产品能否「活起来」的关键。</p>
+  </div>
+
+  <h2><span class="n">04</span>迭代过程</h2>
+  <div class="sub">每一轮迭代，都是一次由使用反馈驱动的产品判断</div>
+
+  <div class="iter">
+    <div class="h"><span class="rd">第 1 轮</span><span class="ti">搭出核心闭环</span></div>
+    <div class="think">上传→抠图→分类→浏览→试衣间拖拽→保存，一次跑通最小可用版本。</div>
+  </div>
+  <div class="iter">
+    <div class="h"><span class="rd">第 2 轮</span><span class="ti">加「矩形框选」</span></div>
+    <div class="think">发现自动抠图会被桌面阴影、花纹误伤。<b>判断：</b>用少量人工输入（框一下）换机器判断的准确率，框外直接去掉。</div>
+  </div>
+  <div class="iter">
+    <div class="h"><span class="rd">第 3 轮</span><span class="ti">升级为「自由框选 + 橡皮擦」</span></div>
+    <div class="think">复杂平铺图（手/挂件/多件同框）矩形框切不干净。<b>判断：</b>没有一个功能能解决所有情况——补套索应对不规则轮廓、加橡皮擦做补刀，让用户按难度自选工具。</div>
+  </div>
+  <div class="iter">
+    <div class="h"><span class="rd">第 4 轮</span><span class="ti">修复搭配缩略图错位 Bug</span></div>
+    <div class="think">保存的搭配缩略图位置对不上。<b>根因：</b>「编辑时」和「展示时」用了两套坐标系。<b>原则：</b>所见即所得——预览与结果必须基于相同规则渲染。</div>
+  </div>
+  <div class="iter">
+    <div class="h"><span class="rd">第 5 轮</span><span class="ti">试衣间体验完善</span></div>
+    <div class="think">加单品缩放、拖到垃圾桶删除（符合用户已有的手机操作直觉）、套装命名。</div>
+  </div>
+  <div class="iter">
+    <div class="h"><span class="rd">第 6 轮</span><span class="ti">数据复用 + 上线</span></div>
+    <div class="think">搭配放大后可点单品看详情（同一份数据在不同场景多次产生价值）；加「收纳位置」让应用从「看搭配」延伸到「找实物」；最终部署上线，拿到可分享的公网链接。</div>
+  </div>
+
+  <h2><span class="n">05</span>本轮交付</h2>
+  <div class="cards">
+    <div class="card"><div class="lbl">核心功能模块</div><div class="num">3</div><div class="d">衣柜 / 试衣间 / 数据</div></div>
+    <div class="card"><div class="lbl">迭代轮次</div><div class="num">6</div><div class="d">需求驱动的持续打磨</div></div>
+    <div class="card"><div class="lbl">上线成本</div><div class="num">¥0</div><div class="d">纯前端 · 零维护</div></div>
+    <div class="card"><div class="lbl">交付状态</div><div class="num">已上线</div><div class="d">公网可访问可分享</div></div>
+  </div>
+
+  <h2><span class="n">06</span>复盘与后续计划</h2>
+  <div class="sub">整理本轮完成内容和下一阶段测试重点</div>
+  <div class="split">
+    <div class="box p">
+      <div class="bt">本轮完成</div>
+      <ul style="margin-bottom:0;">
+        <li>最小闭环可以被完整实现并部署</li>
+        <li>复杂抠图问题可以通过工具分层降低失败率</li>
+        <li>衣物数据可以在衣柜、试衣间与详情场景复用</li>
+      </ul>
+    </div>
+    <div class="box g">
+      <div class="bt">后续测试</div>
+      <ul style="margin-bottom:0;">
+        <li>真实用户是否愿意持续录入衣物</li>
+        <li>上传完成率与重复使用频率</li>
+        <li>云端同步和分享是否值得投入服务器成本</li>
+      </ul>
+    </div>
+  </div>
+  <h3>从项目中沉淀的方法</h3>
+  <ul>
+    <li><strong>技术方案</strong>——第一版采用 H5 与本地存储，控制服务器和云存储成本。</li>
+    <li><strong>门槛设计</strong>——必选项越少，产品越容易「活」；不逼简单用户为复杂功能买单。</li>
+    <li><strong>分层满足</strong>——简单需求给简单工具，复杂需求给强力工具，用户自选。</li>
+    <li><strong>数据复用</strong>——同一份用户数据（品牌/价格/位置）在多个场景反复创造价值。</li>
+    <li><strong>所见即所得</strong>——编辑态与展示态必须一致，是避免体验割裂的底层原则。</li>
+    <li><strong>迭代闭环</strong>——「用 → 发现问题 → 改」的循环，是产品手感的来源。</li>
+  </ul>
+  <div class="decision">
+    <div class="dt">下一步验证</div>
+    <p>邀请少量目标用户完成“上传一件衣物—创建一套搭配—再次查找”的任务，记录完成率、卡点和复用意愿，再决定是否投入登录、云端同步与分享能力。</p>
+  </div>
+
+  <footer>
+    电子衣柜 · 产品案例<br>
+    在线 Demo：chestnutabby111011-debug.github.io/dianzi-yigui/
+  </footer>
+</div>
+</body>
+</html>
